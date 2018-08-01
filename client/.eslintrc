@@ -1,0 +1,25 @@
+{
+  "parser": "babel-eslint", // 使用什么解析器
+  "plugins": [
+    "react",
+    "import"
+  ],
+  "env": { // 运行在什么环境
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "parserOptions": { // da
+    "ecmaVersion": 6, // ECMA 版本
+    "sourceType": "module" // 源代码模式 使用模块的方式
+  },
+  "extends": "airbnb", // 继承什么语法格式
+  "rules": {
+    "semi": [0],
+    "react/jsx-filename-extension": [0],
+    "comma-dangle": ["error", "always"] // 数组最后一个是否要逗号
+   },
+  "settings" : {
+    "import/extensions": [".js", ".jsx"]
+  }
+}

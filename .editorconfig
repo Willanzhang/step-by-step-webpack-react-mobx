@@ -1,0 +1,9 @@
+root = true
+
+[*]
+charset = utf-8
+index-style = space
+index_size = 2
+end_of_line = lf # 换行符，lf、cr和crlf
+insert_finnal_newline = true #设为true表明使文件以一个空白行结尾
+trim_trailing_whitespace = true #自动删除行末空格
