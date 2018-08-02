@@ -1,9 +1,11 @@
 {
   "presets": [  // presets babel 支持的语法
     ["es2015", { "loose": true}],
+    "stage-1",
     "react"
   ],
   "plugins": [
+    "transform-decorators-legacy",
     "react-hot-loader/babel"
   ]
 }
