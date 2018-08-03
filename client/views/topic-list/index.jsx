@@ -6,7 +6,8 @@ import {
 import PropTypes from 'prop-types'
 import { AppState } from '../../store/app-state'
 
-@inject('appState') @observer
+@inject('appState') // 注入appState
+@observer
 
 export default class TopicList extends Component {
   constructor(props) {
@@ -42,5 +43,6 @@ export default class TopicList extends Component {
 }
 
 TopicList.propTypes = {
+  // PropTypes.object.isRequire 由于airbnb eslint的严格检验会不通过 因此校验是否是 AppState类
   appState: PropTypes.instanceOf(AppState)
 }

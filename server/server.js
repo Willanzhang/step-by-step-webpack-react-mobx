@@ -1,5 +1,7 @@
 const express = require('express')
 const ReactSSR = require('react-dom/server')
+const bodyParser = require('body-parser')
+const session = require('express-session')
 const fs = require('fs') // 文件模块
 const path = require('path')
 
@@ -7,6 +9,18 @@ const isDev = process.env.NODE_ENV === 'development'
 
 const app = express()
 
+app.use(bodyParser.json()) // 处理请求体是 json格式 获取req.body
+app.use(bodyParser.urlencoded({ extended: false })) // 处理请求体是 formdata格式    获取req.body
+app.use(session({
+  maxAge: 10 * 60 * 1000,
+  name: 'tid', // cookie id
+  resave: false, // 是否每次请求都获取行的session
+  saveUninitialized: false,
+  secret: 'react node class' // 添加字符串加密cookie?
+}))
+
+app.use('/api/user', require('./util/handle-login.js'))
+app.use('/api', require('./util/proxy.js'))
 
 if (!isDev) { // 若是开发环境 server不同
   const serverEntry = require('../dist/server-entry').default // 打包时的commonjs2   expport default <App/>

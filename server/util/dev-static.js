@@ -17,14 +17,14 @@ const getTemplate = () => { // 获取html模板
 }
 
 const Module = module.constructor // 利用Module创建一个新的module
-const mfs = new MemoryFs() 
+const mfs = new MemoryFs()
 let serverbundle
 const serverCompiler = webpack(serverConfig) // webpack 模块调用
 
 serverCompiler.outputFileSystem = mfs // 在开发环境中 dist文件夹是不存在的， 所有的打包文件是保存在虚拟内存中， 使用fs模块是读取不了的 因此使用memory-fs模块可以读取内存中的文件
 serverCompiler.watch({}, (err, stats) => { // 检测是否有改变  监听webpack打包过程
   if (err) throw err
-  stats = stats.toJson() // stats 
+  stats = stats.toJson() // stats
   stats.errors.forEach( err => console.error(err))
   stats.warnings.forEach( err => console.warn(err))
   const bundlePath = path.join(

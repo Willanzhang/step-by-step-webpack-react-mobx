@@ -61,6 +61,9 @@ if (isDev) {
     publicPath: '/public/', // 等于 dev 服务中  访问所有的静态路径都要在路径前加上public
     historyApiFallback: { // 指定index 是
       index: '/public/index.html' // 所有404的请求全部返回 index.html 自己处理
+    },
+    proxy: {
+      '/api': 'http://localhost:3333' // 所有带/api 的请求都会代理请求到 server端口
     }
   }
   config.plugins.push(new webpack.HotModuleReplacementPlugin()) // dev环境热加载使用

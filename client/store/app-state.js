@@ -6,15 +6,15 @@ import {
 } from 'mobx'
 
 export class AppState {
-  @observable count = 0
+  @observable count = 0 // 需要绑定的值
 
   @observable name = 'William'
 
-  @computed get msg() {
+  @computed get msg() { // 计算属性
     return `${this.name} say count is ${this.count}`
   }
 
-  @action add() {
+  @action add() { // 对于appState绑定值的操作
     this.count += 1
   }
 
@@ -25,7 +25,7 @@ export class AppState {
 
 const appState = new AppState()
 
-autorun(() => {
+autorun(() => { // 监测appState 是否有修改
   // console.log(appState.msg)
 })
 
