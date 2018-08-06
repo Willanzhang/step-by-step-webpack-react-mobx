@@ -4,7 +4,7 @@ import {
   inject // 注入组件内部
 } from 'mobx-react'
 import PropTypes from 'prop-types'
-import { AppState } from '../../store/app-state'
+import AppState from '../../store/app-state'
 
 @inject('appState') // 注入appState
 @observer
@@ -32,7 +32,7 @@ export default class TopicList extends Component {
     const { appState } = this.props
     return (
       <div>
-        this is TopicList
+        this is TopicList123
         <input type="text" onChange={this.changeName} />
         <h1>
           {appState.msg}

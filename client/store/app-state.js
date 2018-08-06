@@ -5,7 +5,7 @@ import {
   action
 } from 'mobx'
 
-export class AppState {
+export default class AppState {
   @observable count = 0 // 需要绑定的值
 
   @observable name = 'William'
@@ -23,14 +23,14 @@ export class AppState {
   }
 }
 
-const appState = new AppState()
+// const appState = new AppState()
 
 autorun(() => { // 监测appState 是否有修改
   // console.log(appState.msg)
 })
 
-setInterval(() => {
-  appState.add()
-}, 3000)
+// setInterval(() => {
+//   appState.add()
+// }, 3000)
 
-export default appState
+// export default appState

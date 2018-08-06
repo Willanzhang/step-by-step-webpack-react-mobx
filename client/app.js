@@ -6,14 +6,14 @@ import {
   BrowserRouter
 } from 'react-router-dom'
 import App from './views/App'
-import appState from './store/app-state'
+import AppState from './store/app-state'
 
 const root = document.getElementById('root')
 // hydrate
 const render = (Component) => {
   ReactDOM.hydrate(
     <AppContainer>
-      <Provider appState={appState}>
+      <Provider appState={new AppState()}>
         <BrowserRouter>
           <Component />
         </BrowserRouter>
