@@ -2,7 +2,7 @@
 const axios = require('axios')
 const querystring = require('query-string')
 
-const baseUrl = 'http://cnodejs.org/api/v1'
+const baseUrl = 'https://cnodejs.org/api/v1'
 
 module.exports = function (req, res, next) {
   const path = req.path
@@ -25,7 +25,7 @@ module.exports = function (req, res, next) {
   axios(`${baseUrl}${path}`, {
     method: req.method,
     params: query,
-    data: querystring.stringfy(Object.assign({}, req.body, {
+    data: querystring.stringify(Object.assign({}, req.body, {
       accesstoken: (needAccessToken && req.method === 'POST')? usre.accessToken: ''
     })), // 就是post请求的boyd ，body 转化为cnode 需要的类型   未使用querystring是 {'accessToken': '123'}    使用后是 'accessToken=123'
     headers: { // cnode api的问题， 统一一下

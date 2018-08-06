@@ -1,7 +1,7 @@
 const router = require('express').Router()
 const axios = require('axios')
 
-const baseUrl = 'http://cnodejs.org/api/v1'
+const baseUrl = 'https://cnodejs.org/api/v1'
 
 router.post('/login', function (req, res, next) {
   axios.post(`${baseUrl}/accesstoken`, {
