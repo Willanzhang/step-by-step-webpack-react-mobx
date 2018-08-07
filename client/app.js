@@ -8,12 +8,14 @@ import {
 import App from './views/App'
 import AppState from './store/app-state'
 
+const initialState = window.__INITIAL__STATE__ || {}
+
 const root = document.getElementById('root')
 // hydrate
 const render = (Component) => {
   ReactDOM.hydrate(
     <AppContainer>
-      <Provider appState={new AppState()}>
+      <Provider appState={new AppState(initialState.appState)}>
         <BrowserRouter>
           <Component />
         </BrowserRouter>

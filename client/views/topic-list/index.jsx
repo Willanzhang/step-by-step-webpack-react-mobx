@@ -15,6 +15,12 @@ export default class TopicList extends Component {
     this.changeName = this.changeName.bind(this)
   }
 
+  asyncBootstrap() { // dev-static会在执行完这个asyncBootstrap方法里的函数再渲染
+    return new Promise((resolve) => {
+      this.props.appState.count = 3
+      resolve(true) // 需要resolve true 要不然不知道是否执行完
+    })
+  }
   // static getDerivedStateFromProps(props, state) {
   //   // ...
   //   console.log(props, state)

@@ -38,6 +38,10 @@ const config = {
   plugins: [
     new HTMLPlugin({ // 生成html 并且将output 引入
       template: path.join(__dirname, '../client/template.html')
+    }),
+    new HTMLPlugin({ // 生成html 服务端渲染需要使用
+      template: '!!ejs-compiled-loader!' + path.join(__dirname, '../client/server.template.ejs'),
+      filename: 'server.ejs'
     })
   ]
 }

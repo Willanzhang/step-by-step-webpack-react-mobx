@@ -6,6 +6,11 @@ import {
 } from 'mobx'
 
 export default class AppState {
+  constructor({ count, name } = { count: 0, name: 'William' }) {
+    this.count = count
+    this.name = name
+  }
+
   @observable count = 0 // 需要绑定的值
 
   @observable name = 'William'
@@ -20,6 +25,13 @@ export default class AppState {
 
   @action changeName(name) {
     this.name = name
+  }
+
+  toJson() {
+    return {
+      count: this.count,
+      name: this.name
+    }
   }
 }
 

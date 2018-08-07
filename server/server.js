@@ -1,5 +1,6 @@
 const express = require('express')
 const ReactSSR = require('react-dom/server')
+const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
 const session = require('express-session')
 const fs = require('fs') // 文件模块
@@ -18,6 +19,8 @@ app.use(session({
   saveUninitialized: false,
   secret: 'react node class' // 添加字符串加密cookie?
 }))
+
+app.use(favicon(path.join(__dirname, '../favicon.ico')))
 
 app.use('/api/user', require('./util/handle-login.js'))
 app.use('/api', require('./util/proxy.js'))
