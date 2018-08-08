@@ -8,6 +8,7 @@ const proxy = require('http-proxy-middleware')
 const ejs = require('ejs')
 const serialize = require('serialize-javascript') // 序列化javascript对象
 const serverConfig = require('../../build/webpack.config.server')
+serverConfig.mode = 'development' // 开发环境才使用
 
 const getTemplate = () => { // 获取html模板
   return new Promise((resolve, reject) => {
@@ -20,7 +21,22 @@ const getTemplate = () => { // 获取html模板
   })
 }
 
-const Module = module.constructor // 利用Module创建一个新的module
+const NativeModule = require('module')
+const vm = require('vm')
+// const Module = module.constructor // 利用Module创建一个新的module
+
+const getModuleFromString = (bundle, filename) => { //1- 和webpack.config.server.js的配置externals 使用 因为不再每次都将需要的重新打包成一个文件，只打包自己的代码
+  const m = { exports: {} }
+  const wrapper = NativeModule.wrap(bundle) // 将可执行的javaScript 代码包装一下  成为`(function(exports, require, module, __filename, __dirname){...bulder code})`
+  const script = new vm.Script(wrapper, { // vm 的script类
+    filename: filename,
+    displayErrors: true
+  })
+  const result = script.runInThisContext() // 设置执行环境的上下文
+  result.call(m.exports, m.exports, require, m) // 这里require 是当前环境的require  会从node_modules查找
+  return m
+}
+
 const mfs = new MemoryFs()
 let serverBundle, createStoreMap
 const serverCompiler = webpack(serverConfig) // webpack 模块调用
@@ -36,9 +52,10 @@ serverCompiler.watch({}, (err, stats) => { // 检测是否有改变  监听webpa
     serverConfig.output.filename
   )
   const bundle = mfs.readFileSync(bundlePath, 'utf-8') // bundle 读取出来是个string 并不是模块
-  const m = new Module()
-  m._compile(bundle, 'server-entry.js') // 将bundle（string）转化为 export default 模块形式 用Module解析 这个 srting  成为 javascript   !必须制定module的名字 'server-entry.js'
-  serverBundle = m.exports.default // 注意！
+  // const m = new Module()
+  // m._compile(bundle, 'server-entry.js') // 将bundle（string）转化为 export default 模块形式 用Module解析 这个 srting  成为 javascript   !必须制定module的名字 'server-entry.js'
+  const m = getModuleFromString(bundle, 'server-entry.js') // 2-
+  serverBundle = m.exports.default // 注意！ .default
   createStoreMap = m.exports.createStoreMap
 })
 
