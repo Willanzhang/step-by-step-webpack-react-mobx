@@ -1,5 +1,5 @@
 const express = require('express')
-const ReactSSR = require('react-dom/server')
+const serverRender = require('./util/server-render')
 const favicon = require('serve-favicon')
 const bodyParser = require('body-parser')
 const session = require('express-session')
@@ -26,17 +26,24 @@ app.use('/api/user', require('./util/handle-login.js'))
 app.use('/api', require('./util/proxy.js'))
 
 if (!isDev) { // 若是开发环境 server不同
-  const serverEntry = require('../dist/server-entry').default // 打包时的commonjs2   expport default <App/>
-  let template = fs.readFileSync(path.join(__dirname, '../dist/index.html'), 'utf8')  // 同步读取并转为utf8字符串 index.html 是插件HTMLPulgin 通过 tempalte生成的
+  const serverEntry = require('../dist/server-entry') // 打包时的commonjs2   expport default <App/> 使用 serverRender 方法不需要.fefault
+  let template = fs.readFileSync(path.join(__dirname, '../dist/server.ejs'), 'utf8')  // 同步读取并转为utf8字符串 index.html 是插件HTMLPulgin 通过 tempalte生成的
   app.use('/public', express.static(path.join(__dirname, '../dist'))) // 设置静态文件地址， 就是当请求的是public的时候就是请求静态文件，会去dist目录下去寻找
-  app.get('*', function (req, res) {
-    const appString = ReactSSR.renderToString(serverEntry) // 将react 的jsx文件转化为dom字符串
-    res.send(template.replace('<!-- app -->', appString))
+  app.get('*', function (req, res, next) {
+    // const appString = ReactSSR.renderToString(serverEntry) // 将react 的jsx文件转化为dom字符串
+    serverRender(serverEntry, template, req, res).catch(next)
+    // res.send(template.replace('<!-- app -->', appString))
   })
 } else {
   const devStatic = require('./util/dev-static')
   devStatic(app)
 }
+
+app.use(function (error, req, res, next) { // 统一处理错误
+  console.log(error)
+  res.status(500).send(error)
+})
+
 app.listen(3333, function () {
   console.log('server is listen 3333')
 })

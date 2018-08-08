@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import Helmet from 'react-helmet'
+import Button from '@material-ui/core/Button'
+
 import {
   observer,
   inject // 注入组件内部
@@ -38,6 +41,13 @@ export default class TopicList extends Component {
     const { appState } = this.props
     return (
       <div>
+        <Helmet>
+          <meta name="description" content="this is description123" />
+          <title>
+            this is topic list1
+          </title>
+        </Helmet>
+        <Button raised="true" color="primary"> this is button1 </Button>
         this is TopicList123
         <input type="text" onChange={this.changeName} />
         <h1>

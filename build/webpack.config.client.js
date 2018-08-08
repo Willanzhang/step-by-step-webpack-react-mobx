@@ -4,7 +4,6 @@ const webpack = require('webpack')
 const baseConfig = require('./webpack.base')
 const webpackMerge = require('webpack-merge')
 const isDev = process.env.NODE_ENV === 'development'
-console.log('---', webpackMerge)
 const config = webpackMerge(baseConfig, {
   entry: {
     app: path.join(__dirname, '../client/app.js') // 入口 文件 利用path使用绝对路径 避免发生错误（环境）
