@@ -47,8 +47,8 @@ export default class TopicList extends Component {
             this is topic list1
           </title>
         </Helmet>
-        <Button raised="true" color="primary"> this is button1 </Button>
-        this is TopicList123
+        <Button variant="contained" raised="true" color="primary"> this is button1 </Button>
+        this is TopicList
         <input type="text" onChange={this.changeName} />
         <h1>
           {appState.msg}

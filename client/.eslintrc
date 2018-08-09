@@ -20,6 +20,7 @@
     "no-underscore-dangle": [0],
     "react/jsx-one-expression-per-line": [0],
     "react/destructuring-assignment": [0],
+    "max-len": [0],
     "react/require-default-props": [0],
     "comma-dangle": ["error", "never"] // 数组最后一个是否要逗号
    },

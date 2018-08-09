@@ -6,6 +6,20 @@ const ejs = require('ejs')
 const Helmet = require('react-helmet').default
 const serialize = require('serialize-javascript') // 序列化javascript对象
 
+
+const SheetsRegistry = require('react-jss').SheetsRegistry
+const create = require('jss').create
+const preset = require('jss-preset-default').default
+const createMuiTheme = require('@material-ui/core/styles').createMuiTheme
+const createGenerateClassName = require('@material-ui/core/styles').createGenerateClassName
+const colors = require('@material-ui/core/colors')
+
+// import  {
+//   MuiThemeProvider,
+//   createMuiTheme,
+//   createGenerateClassName,
+// } from '@material-ui/core/styles' // 其实服务端不推介使用 babel 编译对性能有影响
+
 const getStoreState = (stores) => {
   return Object.keys(stores).reduce((result, storeName) => {
     result[storeName] = stores[storeName].toJson()
@@ -20,7 +34,21 @@ module.exports = (bundle, template, req, res) => {
 
     const routerContext = {}
     const stores = createStoreMap()
-    const app = createApp(stores, routerContext, req.url)
+
+    const theme = createMuiTheme({
+      palette: {
+        primary: colors.lightBlue,
+        accent: colors.pink,
+        type: 'light'
+      }
+    })
+    const sheetsRegistry = new SheetsRegistry()
+    const sheetsManager = new Map()
+
+    const generateClassName = createGenerateClassName()
+
+    const app = createApp(stores, routerContext, req.url, sheetsRegistry, generateClassName, sheetsManager, theme)
+
 
     bootstrap(app).then(() => {
       if (routerContext.url) {
@@ -46,7 +74,8 @@ module.exports = (bundle, template, req, res) => {
         meta: helmet.meta.toString(),
         title: helmet.title.toString(),
         link: helmet.link.toString(),
-        style: helmet.style.toString()
+        style: helmet.style.toString(),
+        css: sheetsRegistry.toString()
       })
       res.send(html)
       resolve()

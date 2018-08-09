@@ -7,6 +7,10 @@ import Router from '../config/router'
 export default class App extends Component {
   componentDidMount() {
     // 123
+    const jssStyles = document.getElementById('jss-server-side');
+    if (jssStyles && jssStyles.parentNode) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
   }
 
   render() {
