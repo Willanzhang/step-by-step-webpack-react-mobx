@@ -14,7 +14,7 @@ import AppState from './store/app-state'
 const theme = createMuiTheme({
   palette: {
     primary: lightBlue,
-    accent: pink,
+    secondary: pink,
     type: 'light'
   }
 })
@@ -27,7 +27,7 @@ const createApp = (TheApp) => {
     componentDidMount() {
       const jssStyles = document.getElementById('jss-server-side');
       if (jssStyles && jssStyles.parentNode) {
-        jssStyles.parentNode.removeChild(jssStyles);
+        // jssStyles.parentNode.removeChild(jssStyles);
       }
     }
 

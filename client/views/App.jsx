@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import {
-  Link
-} from 'react-router-dom'
 import Router from '../config/router'
+import AppBar from './layout/app-bar'
+import Container from './layout/container'
 
 export default class App extends Component {
   componentDidMount() {
@@ -16,11 +15,10 @@ export default class App extends Component {
   render() {
     return (
       <div>
-        this is app1
-        <Link to="/">首页</Link>
-        <br />
-        <Link to="detail">详情</Link>
-        <Router />
+        <AppBar />
+        <Container>
+          <Router />
+        </Container>
       </div>
     )
   }

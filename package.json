@@ -21,6 +21,7 @@
   "license": "MIT",
   "dependencies": {
     "@material-ui/core": "^1.4.3",
+    "@material-ui/icons": "^2.0.1",
     "axios": "^0.18.0",
     "babel-cli": "^6.26.0",
     "babel-runtime": "^6.26.0",

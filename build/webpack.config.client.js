@@ -26,6 +26,7 @@ const config = webpackMerge(baseConfig, {
 })
 console.log('///***',config)
 if (isDev) {
+  config.devtool = '#cheap-module-eval-source-map'
   config.entry = {  // dev环境热加载需要改变entry
     app: [
       'react-hot-loader/patch',
@@ -35,7 +36,7 @@ if (isDev) {
   config.devServer = {
     host: '0.0.0.0', // 使用0.0.0.0 可以同时使用127.0.0.1 localhost IP地址
     port: '8888', // 端口
-    contentBase: path.join(__dirname, '../dist'), // 静态文件目录  等于dev服务是在dist目录下启动的    他的机制是寻找是否有dist目录  当存在dist目录 请求资源会出问题
+    // contentBase: path.join(__dirname, '../dist'), // 静态文件目录  等于dev服务是在dist目录下启动的    他的机制是寻找是否有dist目录  当存在dist目录 请求资源会出问题
     hot: true,
     overlay: { // 有任何错误   overlay：覆盖层
       // errors 弹出
