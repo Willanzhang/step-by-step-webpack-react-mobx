@@ -4,14 +4,17 @@ import Button from '@material-ui/core/Button'
 import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import CircularProgress from '@material-ui/core/CircularProgress'
-
+import queryString from 'query-string'
 import {
   observer,
   inject // 注入组件内部
 } from 'mobx-react'
 import PropTypes from 'prop-types'
+
 import { AppState, TopicStore } from '../../store/store'
 import TopicListItem from './list-item'
+import { tabs } from '../../util/variable-define'
+
 // import Container from '../layout/container'
 
 // @inject('appState') // 注入appState
@@ -23,11 +26,12 @@ import TopicListItem from './list-item'
 @observer
 
 class TopicList extends Component {
+  static contextTypes = {
+    router: PropTypes.object
+  }
+
   constructor(props) {
     super(props)
-    this.state = {
-      tabIndex: 0
-    }
     this.changeName = this.changeName.bind(this)
     this.changeTab = this.changeTab.bind(this)
     this.listItemClick = this.listItemClick.bind(this)
@@ -40,7 +44,21 @@ class TopicList extends Component {
 
   componentDidMount() {
     // do something
-    this.props.topicStore.fetchTopics()
+    const tab = this.getTab()
+    this.props.topicStore.fetchTopics(tab)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const tab = this.getTab(nextProps.location.search)
+    if (nextProps.location.search !== this.props.location.search) {
+      this.props.topicStore.fetchTopics(tab)
+    }
+  }
+
+  getTab(search) {
+    search = search || this.props.location.search
+    const query = queryString.parse(search)
+    return query.tab || 'all'
   }
 
   asyncBootstrap() { // dev-static会在执行完这个asyncBootstrap方法里的函数再渲染 服务端渲染时使用
@@ -54,9 +72,10 @@ class TopicList extends Component {
     this.props.appState.changeName(e.target.value)
   }
 
-  changeTab(e, index) {
-    this.setState({
-      tabIndex: index
+  changeTab(e, value) {
+    this.context.router.history.push({
+      pathname: '/list',
+      search: `?tab=${value}`
     })
   }
   /* eslint-disable */
@@ -86,10 +105,8 @@ class TopicList extends Component {
     const topic = (topicStore && topicStore.topics) || topic1
 
     const syncingTopics = topicStore.syncing
-
-    const {
-      tabIndex
-    } = this.state
+    // const query = queryString.parse(this.props.location.search)
+    const tab = this.getTab()
     return (
       <div>
         <Helmet>
@@ -98,17 +115,20 @@ class TopicList extends Component {
             this is topic list1
           </title>
         </Helmet>
-        <Tabs value={tabIndex} onChange={this.changeTab}>
-          <Tab label="全部" />
-          <Tab label="分享" />
-          <Tab label="工作" />
-          <Tab label="问答" />
-          <Tab label="精品" />
-          <Tab label="测试" />
+        <Tabs value={tab} onChange={this.changeTab}>
+          {
+            Object.keys(tabs).map((tab1) => <Tab key={tab1} label={tabs[tab1]} value={tab1} />)
+          }
         </Tabs>
         {
           syncingTopics ? (
-            <div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-around',
+                padding: '40px 0'
+              }}
+            >
               <CircularProgress color="secondary" size={100} />
             </div>
           ) : null
@@ -127,10 +147,10 @@ class TopicList extends Component {
 
 TopicList.wrappedComponent.propTypes = { // 验证mobx注入验证使用wrappedComponent
   // PropTypes.object.isRequire 由于airbnb eslint的严格检验会不通过 因此校验是否是 AppState类
-  appState: PropTypes.instanceOf(AppState),
-  topicStore: PropTypes.instanceOf(TopicStore)
+  appState: PropTypes.instanceOf(AppState).isRequired,
+  topicStore: PropTypes.instanceOf(TopicStore).isRequired
 }
-// TopicList.propTypes = {
-//   // PropTypes.object.isRequire 由于airbnb eslint的严格检验会不通过 因此校验是否是 AppState类
-// }
+TopicList.propTypes = {
+  location: PropTypes.object.isRequired
+}
 export default TopicList

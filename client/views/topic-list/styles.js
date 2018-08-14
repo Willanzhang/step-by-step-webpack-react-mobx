@@ -15,6 +15,9 @@ export const topicPrimaryStyles = (theme) => ({
     borderRaduis: 3,
     marginRight: 10,
     fontSize: '12px'
+  },
+  top: {
+    backgroundColor: theme.palette.secondary[500]
   }
 })
 

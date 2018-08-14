@@ -1,26 +1,34 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import cx from 'classnames'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-// import Avatar from '@material-ui/core/Avatar'
+import Avatar from '@material-ui/core/Avatar'
 import ListItemText from '@material-ui/core/ListItemText'
-import HomeIcon from '@material-ui/icons/Home'
+// import HomeIcon from '@material-ui/icons/Home'
 import { withStyles } from '@material-ui/core/styles'
 
 import { topicPrimaryStyles, topicSecondaryStyles } from './styles'
+import { tabs } from '../../util/variable-define'
 
-const Primary = ({ topic, classes }) => (
-  <div>
-    <span className={classes.tab}>{topic.tab}</span>
-    <span className={classes.title}>{topic.title}</span>
-  </div>
-)
+const Primary = ({ topic, classes }) => {
+  const classNames = cx({
+    [classes.tab]: true,
+    [classes.top]: topic.top
+  })
+  return (
+    <div className={classes.root}>
+      <span className={classNames}>{topic.top ? '置顶' : tabs[topic.tab]}</span>
+      <span className={classes.title}>{topic.title}</span>
+    </div>
+  )
+}
 
 const Secondary = ({ topic, classes }) => (
   <span className={classes.root}>
-    <span className={classes.userName}>{topic.username}</span>
+    <span className={classes.userName}>{topic.author.loginname}</span>
     <span className={classes.count}>
-      <span className={classes.accentColor}>{topic.replay_count}</span>
+      <span className={classes.accentColor}>{topic.reply_count}</span>
       <span>/</span>
       <span>{topic.visit_count}</span>
     </span>
@@ -45,8 +53,8 @@ const StyledSecondary = withStyles(topicSecondaryStyles)(Secondary)
 const TopicListItem = ({ topic, onClick }) => (
   <List>
     {topic.map(list => (
-      <ListItem key={list.username} button onClick={onClick}>
-        <HomeIcon />
+      <ListItem key={list.id} button onClick={onClick}>
+        <Avatar src={list.author.avatar_url} />
         <ListItemText
           primary={<StyledPrimary topic={list} />}
           secondary={<StyledSecondary topic={list} />}
