@@ -83,7 +83,7 @@ class TopicList extends Component {
       appState
     } = this.props
 
-    const topic = topic1 || (topicStore && topicStore.topics)
+    const topic = (topicStore && topicStore.topics) || topic1
 
     const syncingTopics = topicStore.syncing
 
