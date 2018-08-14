@@ -7,22 +7,20 @@ import ListItemText from '@material-ui/core/ListItemText'
 import HomeIcon from '@material-ui/icons/Home'
 import { withStyles } from '@material-ui/core/styles'
 
-import topicPrimaryStyles from './styles'
+import { topicPrimaryStyles, topicSecondaryStyles } from './styles'
 
-const Primary = ({ topic }) => (
+const Primary = ({ topic, classes }) => (
   <div>
-    <span>{topic.tab}</span>
-    <span>{topic.title}</span>
+    <span className={classes.tab}>{topic.tab}</span>
+    <span className={classes.title}>{topic.title}</span>
   </div>
 )
 
-const StyledPrimary = withStyles(topicPrimaryStyles)(Primary)
-
-const Secondary = ({ topic }) => (
-  <span>
-    <span>{topic.username}</span>
-    <span>
-      <span>{topic.replay_count}</span>
+const Secondary = ({ topic, classes }) => (
+  <span className={classes.root}>
+    <span className={classes.userName}>{topic.username}</span>
+    <span className={classes.count}>
+      <span className={classes.accentColor}>{topic.replay_count}</span>
       <span>/</span>
       <span>{topic.visit_count}</span>
     </span>
@@ -31,13 +29,18 @@ const Secondary = ({ topic }) => (
 )
 
 Primary.propTypes = {
+  classes: PropTypes.object.isRequired,
   topic: PropTypes.object.isRequired
 }
 
 Secondary.propTypes = {
+  classes: PropTypes.object.isRequired,
   topic: PropTypes.object.isRequired
 }
 
+const StyledPrimary = withStyles(topicPrimaryStyles)(Primary)
+
+const StyledSecondary = withStyles(topicSecondaryStyles)(Secondary)
 
 const TopicListItem = ({ topic, onClick }) => (
   <List>
@@ -46,13 +49,12 @@ const TopicListItem = ({ topic, onClick }) => (
         <HomeIcon />
         <ListItemText
           primary={<StyledPrimary topic={list} />}
-          secondary={<Secondary topic={list} />}
+          secondary={<StyledSecondary topic={list} />}
         />
       </ListItem>
     ))}
   </List>
 )
-
 
 TopicListItem.propTypes = {
   onClick: PropTypes.func.isRequired,

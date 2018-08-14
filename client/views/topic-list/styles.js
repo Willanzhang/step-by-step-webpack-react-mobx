@@ -1,4 +1,4 @@
-const topicPrimaryStyles = (theme) => ({
+export const topicPrimaryStyles = (theme) => ({
   root: {
     display: 'flex',
     alginItems: 'center'
@@ -18,4 +18,21 @@ const topicPrimaryStyles = (theme) => ({
   }
 })
 
-export default topicPrimaryStyles
+export const topicSecondaryStyles = (theme) => ({
+  root: {
+    display: 'flex',
+    alginItems: 'center',
+    paddingTop: 3
+  },
+  count: {
+    textAlign: 'center',
+    marginRight: 20
+  },
+  userName: {
+    color: '#9e9e9e',
+    marginRight: 20
+  },
+  accentColor: {
+    color: theme.palette.secondary[300]
+  }
+})
